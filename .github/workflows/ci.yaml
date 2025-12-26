@@ -1,0 +1,50 @@
+name: sample flask work flow
+on:
+    push:
+        branches:
+            - main
+jobs:
+    sampleflow:
+        runs-on:
+            ubuntu-latest
+        steps:
+            - name: checkout code
+              uses: actions/checkout@v4
+            - name: set up python
+              uses: actions/setup-python@v2
+              with:
+                python-version: '3.8'
+            - name: install dependency
+              run:
+                pip install -r requirements.txt
+            - name: run tests
+              run: |
+                python test.py
+                echo "Test passed successfully"
+            - name: run application
+              run:
+                python app.py
+            - name : print secret flask app
+              env:
+                FLASK_APP: ${{ secrets.FLASK_APP }}
+              run: |
+                echo $FLASK_APP
+                echo "Secret printed successfully"
+    testflow:
+        runs-on:
+            ubuntu-latest
+        needs: sampleflow
+        steps:
+            - name: checkout code
+              uses: actions/checkout@v4
+            - name: set up python
+              uses: actions/setup-python@v4
+              with:
+                python-version: '3.8'
+             
+            - name: install dependency
+              run:
+                pip install -r requirements.txt
+            - name: run tests
+              run:
+                python test.py

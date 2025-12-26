@@ -1,0 +1,29 @@
+name: CI/CD pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Build app
+        run: echo "Building..."
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build   # test waits until build finishes
+    steps:
+      - name: Run tests
+        run: echo "Testing..."
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test    # deploy waits until test finishes
+    steps:
+      - name: Deploy app
+        run: echo "Deploying..."

@@ -21,9 +21,9 @@ jobs:
               run: |
                 python test.py
                 echo "Test passed successfully"
-            - name: run application
-              run:
-                python app.py
+            
+            - name: Stop Flask 
+              run: pkill -f "python app.py"
             - name : print secret flask app
               env:
                 FLASK_APP: ${{ secrets.FLASK_APP }}
